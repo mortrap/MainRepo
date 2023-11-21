@@ -11,7 +11,12 @@ export class AppController {
     @Param('id_code') id_code: string): Promise<any> {
    
    const cut = await this.redisService.getCuts(id_code);
+   
    if (!cut) throw new NotFoundException('Contact does not exist');
-   return res.status(HttpStatus.OK).json(cut);
+
+        return res.status(HttpStatus.OK).json(cut);
 }
+
+
+
 }

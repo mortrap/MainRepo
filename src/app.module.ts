@@ -8,8 +8,8 @@ import { AssetController } from './asset/asset.controller';
 
 
 @Module({
-  imports: [RedisModule,CacheModule.register()],
+  imports: [RedisModule, CacheModule.register()],
   controllers: [AppController, AssetController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,5 +1,6 @@
 import { Controller, Get, HttpStatus, Inject, NotFoundException, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Cut } from './cut';
 
 
 @Controller('api/discount')
@@ -8,11 +9,11 @@ export class AppController {
   @Get(':id_code')
   async getCuts(
     @Res() res,
-    @Param('id_code') id_code: string): Promise<any> {
+    @Param('id_code') id_code: string): Promise<Cut[]> {
    
    const cut = await this.redisService.getCuts(id_code);
    
-   if (!cut) throw new NotFoundException('Contact does not exist');
+   if (!cut) throw new NotFoundException('Cut does not exist');
 
         return res.status(HttpStatus.OK).json(cut);
 }

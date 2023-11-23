@@ -26,13 +26,20 @@ export class AppService {
 
   async arrayToRedis(parsed_result: string): Promise<any> {
     let idCodeSet = new Set<string>;
-    let cutMap = new Map<string, Cut[]>;
+    let cutSet:Set<Cut> = new Set;
     let cuts: Cut[] = [];
-    let cutsDuplicate: Cut[] = [];
     let whs = [];
+
+    for (const mark of parsed_result) {
+      let cut: Cut = new Cut(mark[0], mark[1], mark[2], mark[3], mark[4], whs)
+      if (idCodeSet.has(mark[0])) {
+         cutSet.add(cut);}
+      idCodeSet.add(mark[0])
+      cutSet.add(cut);
+    }
     let num: number = 0;
     for (const mark of parsed_result) {
-
+      cuts.length = 0;
       whs.length = 0;
       let newCut = new Cut(mark[0], mark[1], mark[2], mark[3], mark[4], whs);
 
@@ -41,18 +48,11 @@ export class AppService {
           whs.push(field);
         }
       }
+      cutSet.forEach(cut => {
+        if (cut.id_code === newCut.id_code&&newCut!=cut)
+          cuts.push(cut);});
 
-      if (idCodeSet.has(mark[0])) {
-        cuts.push(newCut);
-      }
-      else { idCodeSet.add(mark[0]); }
-
-      cuts.push(newCut);
       this.redis.set(mark[0], JSON.stringify(cuts));
-
-
-      cuts.length = 0;
-      cutsDuplicate.length = 0;
       num++;
 
     }

@@ -27,11 +27,9 @@ export class AppService {
 
     let cutSet: Set<Cut> = new Set;
     let cuts: Cut[] = [];
-    let whss = [];
-    let whs = [];
     let seq: number = 0;
     for (const mark of parsed_result) {
-      whss.length = 0;
+      
       let cut: Cut = new Cut(mark[0], mark[1], mark[2], mark[3], mark[4], [])
       if (seq >= 5) {
         for (const wh of mark.slice(5)) {
@@ -40,9 +38,7 @@ export class AppService {
         }
       };
       cutSet.add(cut);
-      seq++;
-
-      
+      seq++;  
     }
     
     cutSet.forEach(value => console.log(value));

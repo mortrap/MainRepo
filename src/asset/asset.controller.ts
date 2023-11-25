@@ -6,12 +6,15 @@ import { diskStorage } from 'multer';
 import { parse } from 'papaparse';
 
 import { AppService } from 'src/app.service';
+import { Role } from 'src/auth/role.enum';
+import { Roles } from 'src/auth/roles.decorator';
 
 
 @Controller('asset')
 export class AssetController {
     constructor(private cacheM: AppService) { }
     @Post()
+    
     @UseInterceptors(
         FileInterceptor('file_asset', {
             storage: diskStorage({

@@ -1,12 +1,15 @@
 import { Controller, Get, HttpStatus, Inject, NotFoundException, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Cut } from './cut';
+import { Role } from './auth/role.enum';
+import { Roles } from './auth/roles.decorator';
 
 
 @Controller('api/discount')
 export class AppController {
   constructor(private redisService: AppService) { }
   @Get(':id_code')
+  
   async getCuts(
     @Res() res,
     @Param('id_code') id_code: string): Promise<Cut[]> {

@@ -29,36 +29,36 @@ export class AppService {
     let cuts: Cut[] = [];
     let seq: number = 0;
     for (const mark of parsed_result) {
-      
+
       let cut: Cut = new Cut(mark[0], mark[1], mark[2], mark[3], mark[4], [])
       if (seq >= 5) {
         for (const wh of mark.slice(5)) {
-          
+
           cut.whs.push(parseInt(wh));
         }
       };
       cutSet.add(cut);
-      seq++;  
+      seq++;
     }
-    
-    cutSet.forEach(value => console.log(value));
-    
+
+    //cutSet.forEach(value => console.log(value));
+
     let num: number = 0;
     for (const mark of parsed_result) {
       cuts.length = 0;
 
-  
+
       cutSet.forEach(cut => {
-        if (cut.id_code === mark[0] && cut!=null) {
-          
+        if (cut.id_code === mark[0] && cut != null) {
+
           cuts.push(cut);
-         
+
         }
       });
 
       this.redis.set(mark[0], JSON.stringify(cuts));
       num++;
-      
+
     }
   }
 }

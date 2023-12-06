@@ -1,13 +1,12 @@
 
-import { Controller, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { readFileSync, readSync } from 'fs';
 import { diskStorage } from 'multer';
 import { parse } from 'papaparse';
 
 import { AppService } from 'src/app.service';
-import { Role } from 'src/auth/role.enum';
-import { Roles } from 'src/auth/roles.decorator';
+import { AuthGuard } from 'src/auth/auth/auth.guard';
 
 
 @Controller('asset')
@@ -18,7 +17,7 @@ export class AssetController {
     @UseInterceptors(
         FileInterceptor('file_asset', {
             storage: diskStorage({
-                destination: './files',
+                destination: './uploads',
                 filename: (req, file, cb) => {
                     cb(null, file.originalname);
                 },
@@ -29,7 +28,7 @@ export class AssetController {
         @UploadedFile()
         file: Express.Multer.File
     ) {
-        const csvFile = readFileSync('./files/uploadOTREZ.csv', { encoding: 'utf-8' });
+        const csvFile = readFileSync('./uploads/uploadOTREZ.csv', { encoding: 'utf-8' });
         const csvData = csvFile.toString();
         const parseCsv = await parse(csvData, {
             skipEmptyLines: true,
